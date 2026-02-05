@@ -1,0 +1,14 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended"],
+  "customManagers": [
+    {
+      "customType": "jsonata",
+      "fileFormat": "toml",
+      "managerFilePatterns": ["/(^|/)prek\\.toml$/"],
+      "matchStrings": [
+        "repos[repo != 'local' and repo != 'meta' and repo != 'builtin'].{ \"depName\": $match(repo, /github\\.com\\/(.+)/).groups[0], \"currentValue\": rev, \"datasource\": \"github-tags\" }"
+      ]
+    }
+  ]
+}

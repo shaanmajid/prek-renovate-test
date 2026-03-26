@@ -1,0 +1,104 @@
+minimum_prek_version = "0.2.0"
+
+# 1. Basic stale tag
+[[repos]]
+repo = "https://github.com/astral-sh/ruff-pre-commit"
+rev = "v0.15.3"
+hooks = [
+    { id = "ruff", args = ["--fix"] },
+    { id = "ruff-format" },
+]
+
+# 2. Stale tag (no v-prefix versioning)
+[[repos]]
+repo = "https://github.com/astral-sh/uv-pre-commit"
+rev = "0.10.11"
+hooks = [{ id = "uv-lock" }]
+
+# 3. Frozen SHA pin
+[[repos]]
+repo = "https://github.com/crate-ci/typos"
+rev = "93cbdb2d23269548cf0db0f74d0bc6a09a3f0d5c" # frozen: v1.43.0
+hooks = [{ id = "typos" }]
+
+# 4. Naked SHA pin (calver, no v-prefix)
+[[repos]]
+repo = "https://github.com/psf/black"
+rev = "8a737e727ac5ab2f1d4cf5876720ed276dc8dc4b"
+hooks = [{ id = "black" }]
+
+# 5. Version comment SHA (non-frozen) + Go additional deps
+[[repos]]
+repo = "https://github.com/rhysd/actionlint"
+rev = "5db9d9cde2f3deb5035dea3e45f0a9fff2f29448" # v1.7.4
+
+[[repos.hooks]]
+id = "actionlint"
+language = "golang"
+additional_dependencies = [
+    "github.com/wasilibs/go-shellcheck/cmd/shellcheck@v0.10.0",
+]
+
+# 6. Stale tag + Node additional deps
+[[repos]]
+repo = "https://github.com/pre-commit/mirrors-prettier"
+rev = "v3.0.3"
+
+[[repos.hooks]]
+id = "prettier"
+language = "node"
+additional_dependencies = [
+    "@trivago/prettier-plugin-sort-imports@^5.0.0",
+    "prettier@^3.0.0",
+]
+
+# 7. .git suffix URL + Python additional deps
+[[repos]]
+repo = "https://github.com/pre-commit/mirrors-mypy.git"
+rev = "v1.17.1"
+
+[[repos.hooks]]
+id = "mypy"
+language = "python"
+additional_dependencies = [
+    "types-requests==2.31.0",
+]
+
+# 8. Local repo - node additional deps
+[[repos]]
+repo = "local"
+
+[[repos.hooks]]
+id = "prettier-local"
+language = "node"
+entry = "prettier --write"
+types = ["javascript"]
+additional_dependencies = [
+    "prettier@^3.0.0",
+]
+
+# 9. Local repo - python additional deps
+[[repos]]
+repo = "local"
+
+[[repos.hooks]]
+id = "mypy-local"
+language = "python"
+entry = "mypy"
+types = ["python"]
+additional_dependencies = [
+    "types-requests==2.31.0",
+]
+
+# 10. Meta repo (should be ignored entirely)
+[[repos]]
+repo = "meta"
+hooks = [{ id = "check-hooks-apply" }]
+
+# 11. Builtin repo (should be ignored entirely)
+[[repos]]
+repo = "builtin"
+hooks = [
+    { id = "trailing-whitespace" },
+    { id = "check-added-large-files" },
+]
